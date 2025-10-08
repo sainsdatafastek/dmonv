@@ -1,0 +1,85 @@
+﻿html
+{
+	overflow-x: hidden;
+	height: 100%;
+}
+
+body
+{
+    font-family: Arial, tahoma,verdana;
+    font-size: 11pt;
+    padding: 0px;
+    margin: 0px;
+    color: black;    
+}
+
+td
+{
+	font-family: Arial, tahoma,verdana;
+}
+h1
+{
+	font-family: Cambria, Arial, Trebuchet MS;
+	font-size: 14pt;
+}
+
+h2
+{
+	font-family: Cambria, Arial, Trebuchet MS;
+	font-size: 13pt;
+	color: black;
+}
+
+img
+{
+    border: 0px;
+}
+
+a
+{
+    color: black;
+    text-decoration: underline;
+}
+
+a:hover
+{
+    text-decoration: none;
+}
+
+.mainContainer
+{
+	width: 100%;
+	background-color: #d9e4f3;
+	border: 0px solid #3b5a82;
+	border-bottom: 0px;
+	color:black; 
+	border:solid 0px #666; 
+	position:absolute; 
+	top:45px; 
+	left:70px; 
+	z-index:100;
+}
+
+.textboxbackground
+{
+	width: 100%;
+	background-color: black;
+    background-image: url(images/background.png);
+    background-repeat: repeat-x;
+}
+.textbox
+{
+	background-image: url(images/textboxbg.png);
+	background-repeat: repeat-y;
+	width: 1024px;
+	margin: 0px auto;
+	padding:10px;
+}
+
+.textbox div
+{
+	width: 900px;
+	margin: 0px;
+	padding: 20px;
+}
+select, options{ z-index:10;}

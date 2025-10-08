@@ -1,0 +1,8 @@
+<?php
+	//// Koneksi Jab
+	$HostJab             = "localhost";
+	$UserJab             = "root";
+	$PwdJab              = "";
+	$DbsJab              = "dbbimandiri";
+	$JConn = mysql_connect($HostJab,$UserJab,$PwdJab);if ($JConn){$dbJab=mysql_select_db($DbsJab,$JConn);}
+?>

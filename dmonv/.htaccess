@@ -1,0 +1,44 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+RewriteRule ^$ index.php?Pg=home [L]
+RewriteRule ^galeri-(.*).html$ zoom.php?id=$1 [L]
+RewriteRule ^halkomentar-(.*)-([0-9]+).html$ index.php?Pg=detailberita&id=$1&halkomentar=$2 [L]
+RewriteRule ^hasil-pencarian.html$ index.php?Pg=hasilcari&id=$1 [L]
+RewriteRule ^hasil-pencarian.html$ index.php?Pg=hasilcari&id=$1 [L]
+RewriteRule ^indeks-berita.html$ index.php?Pg=indeksberita&id=$1 [L]
+RewriteRule ^profil-kami.html$ index.php?Pg=profilkami&id=$1 [L]
+
+
+RewriteRule ^hubungi-aksi.html$ index.php?Pg=hubungiaksi&id=$1 [L]
+RewriteRule ^hubungi-kami.html$ index.php?Pg=hubungikami&id=$1 [L]
+RewriteRule ^statis-(.*).html$ index.php?Pg=halamanstatis&id=$1 [L]
+RewriteRule ^lihat-poling.html$ index.php?Pg=hasilpolling&id=lihat [L]
+RewriteRule ^hasil-poling.html$ index.php?Pg=hasilpolling&id=$1 [L]
+RewriteRule ^semua-download.html$ index.php?Pg=semuadownload&id=$1 [L]
+RewriteRule ^haldownload-(.*).html$ index.php?Pg=semuadownload&haldownload=$1 [L]
+RewriteRule ^halgaleri-([0-9]+)-(.*).html$ index.php?Pg=detailalbum&id=$1&halgaleri=$2 [L]
+RewriteRule ^album-([0-9]+)-(.*).html$ index.php?Pg=detailalbum&id=$1 [L]
+RewriteRule ^semua-album.html$ index.php?Pg=semuaalbum&id=$1 [L]
+RewriteRule ^agenda-(.*).html$ index.php?Pg=semuaagenda&id=$1 [L]
+RewriteRule ^semua-agenda.html$ index.php?Pg=semuaagenda&id=$1 [L]
+RewriteRule ^halagenda-(.*).html$ index.php?Pg=semuaagenda&halagenda=$1 [L]
+RewriteRule ^halkategori-([0-9]+)-(.*).html$ index.php?Pg=semuaberita&id=$1&halkategori=$2 [L]
+RewriteRule ^kategori-([0-9]+)-(.*).html$ index.php?Pg=semuaberita&id=$1 [L]
+RewriteRule ^halberita-(.*).html$ index.php?Pg=semuaberita&halberita=$1 [L]
+RewriteRule ^semua-berita.html$ index.php?Pg=semuaberita&id=$1 [L]
+RewriteRule ^berita-(.*)-(.*).html$ index.php?Pg=detailberita&id=$1 [L]
+
+RewriteRule ^pagecategory-([0-9]+)-(.*).html$ index.php?Pg=Login&Pr=semuaberita&id=$1&halkategori=$2 [L]
+RewriteRule ^category-([0-9]+)-(.*).html$ index.php?Pg=Login&Pr=semuaberita&id=$1 [L]
+RewriteRule ^pagenews-(.*).html$ index.php?Pg=Login&Pr=semuaberita&halberita=$1 [L]
+RewriteRule ^all-news.html$ index.php?Pg=Login&Pr=semuaberita&id=$1 [L]
+RewriteRule ^news-(.*)-(.*).html$ index.php?Pg=Login&Pr=detailberita&id=$1 [L]
+
+RewriteRule ^internpagecategory-([0-9]+)-(.*).html$ index.php?Pg=Login&Pr=internsemuaberita&id=$1&halkategori=$2 [L]
+RewriteRule ^interncategory-([0-9]+)-(.*).html$ index.php?Pg=Login&Pr=internsemuaberita&id=$1 [L]
+RewriteRule ^internpagenews-(.*).html$ index.php?Pg=Login&Pr=internsemuaberita&halberita=$1 [L]
+RewriteRule ^internall-news.html$ index.php?Pg=Login&Pr=internsemuaberita&id=$1 [L]
+RewriteRule ^internnews-(.*)-(.*).html$ index.php?Pg=Login&Pr=interndetailberita&id=$1 [L]
+Options All -Indexes
+</IfModule>

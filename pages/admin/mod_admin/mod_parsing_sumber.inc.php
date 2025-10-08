@@ -1,0 +1,157 @@
+<?php
+	$nmtable=!empty($nmtable)?$nmtable:"";
+	$nmurl=!empty($nmurl)?$nmurl:"";
+	$aktif=!empty($aktif)?$aktif:"";
+	switch($Action)
+	{
+		case"Simpan":
+			if(!empty($nmurl)&&!empty($nmtable)&&!empty($aktif))
+			{	
+				
+				$Qry=_mysql_query("select * from parsing_json where idparsing='".@$idparsing."'");
+				if(_mysql_num_rows($Qry)>0)					
+				{$QSimpan="UPDATE parsing_json SET nmurl='{$nmurl}', nmtable='$nmtable', aktif='$aktif' WHERE  idparsing='$idparsing' LIMIT 1;";}	
+				else
+				{$QSimpan="INSERT INTO parsing_json (nmurl, nmtable, aktif) VALUES ('$nmurl', '$nmtable', '$aktif');";}
+				$Simpan = _mysql_query($QSimpan) or  $Func->ViewPesan("Gagal di simpan, ".mysql_error(),0);
+				$Pesan = $Simpan?$Func->ViewPesan("Sudah di simpan"):$Func->ViewPesan("Gagal di simpan, ".mysql_error(),0);	
+			}
+		break;
+		case"hapus":
+			_mysql_query("delete from parsing_json where idparsing='$id' LIMIT 1;");
+		break;
+		case"edit":
+			$Func->ambilData("select * from parsing_json where idparsing='$id'");
+		break;
+		case "baru":
+			header("location:index.php?Pg=$Pg&Pr=$Pr");
+		break;
+	}
+	$idparsing=!empty($idparsing)?$idparsing:"";
+	$Main->Isi = "
+	$Pesan
+
+	
+
+	<div id='list'>
+	<form name=Fm id=Fm method=post action='$PHP_SELF?Pg=$Pg&Pr=$Pr#transaksi' enctype='multipart/form-data'>
+	<TABLE width=100%>
+		<td align=right width=100%>
+			<input type='button' value='Baru' class='button' onclick=\"Fm.Action.value='baru';Fm.Mode.value='';Fm.submit();\"/>	
+			<input type='button' value='Simpan' class='button' onclick=\"Fm.Action.value='Simpan';Fm.Mode.value='';Fm.submit();\"/>		
+			<a href='http://".$_SERVER['SERVER_NAME'] ."/parsing/' target='_blank'><input type='button' value='Run Semua URL' class='button'/></a>			
+			<a href='http://".$_SERVER['SERVER_NAME'] ."/parsing_one/index.php?id=".$idparsing."' target='_blank'><input type='button' value='Run Satu URL' class='button'/></a>			
+		</td>
+	</TR>
+	</TABLE>
+	<table width=100%>
+	<tr >
+		<td>Nama Table</td>
+		<td> ".$Func->txtField("nmtable",$nmtable,'','100','text')."</td>
+	</tr>
+	<tr>
+		<td>Nama Url</td>
+		<td> ".$Func->txtField("nmurl",$nmurl,'','150','text')."</td>
+	</tr>	
+	<tr >
+		<td>Aktif</td>
+		<td> ".$Func->cmb2D("aktif",$aktif,array(array('1','Aktif'),array('2','Tidak Aktif')))."</td>
+	</tr>
+	
+	</table>
+	    ".$Func->txtField('idparsing',@$idparsing,'','','hidden')."
+	    ".$Func->txtField('Pr',$Pr,'','','hidden')."
+		".$Func->txtField('Sb',$Sb,'','','hidden')."
+		".$Func->txtField('Mode',$Mode,'','','hidden')."
+		".$Func->txtField('Action',$Action,'','','hidden')."
+</div>
+	";
+	$wh="";
+	$ckata=!empty($ckata)?$ckata:"";
+	$wh=!empty($ckata)?" where nmtable like '%".$ckata."%' or nmurl like '%".$ckata."%'":"";
+
+	$ArrAktif=array('Aktif','Tidak Aktif');
+	$PageNavi = new pageNavi;
+	$pagehal=!empty($pagehal)?$pagehal:"";
+	$batas = 100;
+	$halaman=!empty($_GET['pagehal'])?$_GET['pagehal']:1;
+	$posisi = $PageNavi->cariPosisi($batas);
+	$i=$posisi+1; //a.KREDIT
+	$jmldata = _mysql_num_rows(_mysql_query("select * from parsing_json $wh"));
+	$jmlhalaman = $PageNavi->jumlahHalaman($jmldata, $batas);
+	$linkHalaman = $PageNavi->navHalaman($halaman, $jmlhalaman, "index.php?Pg=$Pg&Pr=$Pr&ckata=$ckata&Action=$Action");
+	$link="<div class='light'><div class='pageNavi'>$linkHalaman</div></div>";
+
+	/// LIST DATA
+	$ListMode="";
+	//a.KREDIT, 
+	
+	$Qry=_mysql_query("select * from parsing_json  $wh limit $posisi,$batas");
+	
+	if(_mysql_num_rows($Qry)>0)
+	{		
+		while($Isi=_mysql_fetch_array($Qry))
+		{		$popup="";
+			
+			$ListMode.="
+				<tr $wr  onmouseover=\"TG(this,'#FFCC33')\" onmouseout=\"TG(this,'')\" >
+					<td align=center $popup>$i</td>
+					<td $popup>{$Isi['nmtable']}</td>
+					<td $popup>{$Isi['nmurl']}</td>					
+					<td $popup>".$ArrAktif[$Isi['aktif']-1]."</td>
+					<td width='10'>
+						<a href=\"index.php?Pg=$Pg&Pr=$Pr&Action=edit&id={$Isi['idparsing']}\">
+							<img src='{$Dir->Images}/icon/edit.gif'>
+						</a>
+					</td>
+					<td width='10'>
+						<a href=\"index.php?Pg=$Pg&Pr=$Pr&Action=hapus&id={$Isi['idparsing']}\" onclick=\"Cek=confirm('Yakin akan di hapus ?');if(!Cek){return false;}\">
+							<img src='{$Dir->Images}/icon/hapus.gif'>
+						</a>
+					</td>
+				</tr>
+			";$i++;
+			
+		}
+		$nohal=$i-1;
+	}
+
+	
+	$Main->Isi .="
+	<table width='100%'>
+	<tr>
+		<td><b>Keterangan : </b><br>
+	*) Untuk memasukan data kedalam table tambahkan sisipan 2 field diakhir<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;`__tanggal_kirim` DATETIME NULL DEFAULT NULL,<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;`__status` CHAR(255) NULL DEFAULT NULL
+	<br>
+	*) struktur field, susunan field, dan penamaan field harus di samakan sesuai data json</td>
+		<td>Cari ".$Func->txtField("ckata",$ckata,'','100','text')." <input type='button' value='Cari' class='button' onclick=\"Fm.Action.value='Cari';Fm.Mode.value='';Fm.submit();\"/>	</td>
+	</tr>
+	</table>
+	
+	
+	
+	<table class='tablesorter' id='tablesorter' width=100% cellpadding=1 cellspacing=0 align=center>
+	<thead>
+		<tr>
+			<th width=10>".$Func->SortHeader("No.")."</th>
+			<th>".$Func->SortHeader("Nama Table")."</th>
+			<th>".$Func->SortHeader("nmurl")."</th>
+			<th>".$Func->SortHeader("Aktif")."</th>
+			<th colspan=2>&nbsp;</th>									
+		</tr>
+		</thead>
+		<tbody>$ListMode</tbody>
+	</table>	
+	".$Func->txtField('halaman',$halaman,'','','hidden')."
+	".$Func->txtField('pagehal',$pagehal,'','','hidden')."
+	".$Func->txtField('posisi',$posisi,'','','hidden')."
+	".$Func->txtField('id',$id,'','','hidden')."
+		
+		
+	</FORM>
+	$link
+	";
+	
+?>
